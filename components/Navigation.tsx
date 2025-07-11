@@ -52,7 +52,7 @@ export default function Navigation() {
     <>
       {/* Desktop Navigation - Terminal Style */}
       <nav className="fixed top-8 left-0 right-0 z-50 hidden md:block px-6">
-        <div className="backdrop-blur-md bg-black/20 border border-green-500/30 rounded-lg p-2 max-w-4xl mx-auto"></div>
+        <div className="backdrop-blur-md bg-black/20 border border-green-500/30 rounded-lg p-2 max-w-4xl mx-auto">
           <div className="flex items-center space-x-1">
             <div className="flex space-x-1 mr-4">
               <div className="w-3 h-3 bg-red-500 rounded-full"></div>
