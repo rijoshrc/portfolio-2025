@@ -1,4 +1,6 @@
 
+"use client";
+
 export default function Hero() {
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -13,7 +15,15 @@ export default function Hero() {
         <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
           Crafting digital experiences with 10 years of expertise in modern web technologies
         </p>
-        <button className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300">
+        <button 
+          onClick={() => {
+            const projectsSection = document.getElementById('projects');
+            if (projectsSection) {
+              projectsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 cursor-pointer"
+        >
           View My Work
         </button>
       </div>
