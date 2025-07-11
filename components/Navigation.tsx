@@ -78,35 +78,6 @@ export default function Navigation() {
           </div>
         </div>
       </nav>
-
-      {/* Mobile Navigation - Glassmorphic */}
-      <nav className="fixed top-4 right-4 z-50 md:hidden">
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="backdrop-blur-md bg-white/10 border border-white/20 rounded-full p-3 text-white"
-        >
-          {isMenuOpen ? '✕' : '☰'}
-        </button>
-        
-        {isMenuOpen && (
-          <div className="absolute top-16 right-0 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 min-w-[200px]">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                  activeSection === item.id
-                    ? 'bg-cyan-500/20 text-cyan-400'
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                <span className="text-xl">{item.icon}</span>
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </div>
-        )}
-      </nav>
     </>
-  );
+  )
 }
