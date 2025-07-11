@@ -1,4 +1,3 @@
-
 export default function Experience() {
   const experiences = [
     {
@@ -8,8 +7,8 @@ export default function Experience() {
       achievements: [
         "Led development of microservices architecture serving 1M+ users",
         "Reduced application load time by 40% through optimization",
-        "Mentored 5 junior developers and established coding standards"
-      ]
+        "Mentored 5 junior developers and established coding standards",
+      ],
     },
     {
       company: "Digital Innovations Inc",
@@ -18,8 +17,8 @@ export default function Experience() {
       achievements: [
         "Built and maintained 15+ client applications",
         "Implemented CI/CD pipelines reducing deployment time by 60%",
-        "Collaborated with design teams to create responsive web applications"
-      ]
+        "Collaborated with design teams to create responsive web applications",
+      ],
     },
     {
       company: "StartupXYZ",
@@ -28,9 +27,9 @@ export default function Experience() {
       achievements: [
         "Developed MVP that secured $2M in Series A funding",
         "Created component library used across 10+ projects",
-        "Improved user engagement by 35% through UX optimizations"
-      ]
-    }
+        "Improved user engagement by 35% through UX optimizations",
+      ],
+    },
   ];
 
   return (
@@ -41,13 +40,20 @@ export default function Experience() {
         </h2>
         <div className="space-y-8">
           {experiences.map((exp, index) => (
-            <div key={index} className="backdrop-blur-md bg-white/10 rounded-3xl p-8 border border-white/20 hover:border-cyan-400/50 transition-all duration-300">
+            <div
+              key={index}
+              className="backdrop-blur-md bg-white/10 rounded-3xl p-8 border border-white/20 hover:border-cyan-400/50 transition-all duration-300"
+            >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                 <div>
-                  <h3 className="text-2xl font-semibold text-cyan-300">{exp.position}</h3>
+                  <h3 className="text-2xl font-semibold text-cyan-300">
+                    {exp.position}
+                  </h3>
                   <p className="text-xl text-gray-300">{exp.company}</p>
                 </div>
-                <span className="text-gray-400 mt-2 md:mt-0">{exp.duration}</span>
+                <span className="text-gray-400 mt-2 md:mt-0">
+                  {exp.duration}
+                </span>
               </div>
               <ul className="space-y-2">
                 {exp.achievements.map((achievement, achIndex) => (
