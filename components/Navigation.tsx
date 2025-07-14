@@ -52,21 +52,21 @@ export default function Navigation() {
       {/* Desktop Navigation - Terminal Style */}
       <nav className="fixed top-8 left-0 right-0 z-50 hidden md:block px-6">
         <div className="backdrop-blur-md bg-black/20 border border-green-500/30 rounded-lg p-2 max-w-4xl mx-auto">
-          <div className="flex items-center space-x-1">
-            <div className="flex space-x-1 mr-4">
+          <div className="flex items-center space-x-1 overflow-x-auto">
+            <div className="flex space-x-1 mr-4 flex-shrink-0">
               <div className="w-3 h-3 bg-red-500 rounded-full"></div>
               <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
             </div>
-            <div className="text-green-400 text-sm font-mono mr-2">
+            <div className="text-green-400 text-sm font-mono mr-2 flex-shrink-0">
               alex@portfolio:~$
             </div>
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 overflow-x-auto">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`px-3 py-1 rounded text-sm font-mono transition-all duration-200 ${
+                  className={`px-3 py-1 rounded text-sm font-mono transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
                     activeSection === item.id
                       ? "bg-green-500/20 text-green-400 border border-green-500/40"
                       : "text-green-300 hover:text-green-400 hover:bg-green-500/10"
