@@ -362,18 +362,45 @@ export default function AnimatedBackground() {
         style={{ background: 'transparent' }}
       />
 
-      {/* Toggle Button */}
+      {/* Toggle Button with Mini Animation Preview */}
       <button
         onClick={nextAnimation}
-        className="fixed bottom-8 right-8 z-50 backdrop-blur-md bg-white/10 border border-white/20 rounded-full p-3 text-white hover:bg-white/20 transition-all duration-300 flex flex-col items-center"
+        className="fixed bottom-8 right-8 z-50 backdrop-blur-md bg-white/10 border border-white/20 rounded-full p-3 text-white hover:bg-white/20 transition-all duration-300 w-16 h-16 flex items-center justify-center"
         title={`Current: ${animationNames[currentAnimation]}`}
       >
-        <span className="text-lg mb-1">
-          {currentAnimation === 4 ? '💤' : '🎨'}
-        </span>
-        <span className="text-xs font-mono">
-          {animationNames[currentAnimation]}
-        </span>
+        <div className="w-8 h-8 flex items-center justify-center">
+          {currentAnimation === 0 && (
+            <div className="relative">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+              <div className="w-1 h-1 bg-purple-400 rounded-full absolute top-1 left-2 animate-bounce"></div>
+              <div className="w-1.5 h-1.5 bg-teal-400 rounded-full absolute -top-1 right-0 animate-ping"></div>
+            </div>
+          )}
+          {currentAnimation === 1 && (
+            <div className="flex space-x-0.5">
+              <div className="w-0.5 h-6 bg-cyan-400 animate-pulse" style={{ animationDelay: '0s' }}></div>
+              <div className="w-0.5 h-4 bg-purple-400 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-0.5 h-5 bg-teal-400 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+              <div className="w-0.5 h-3 bg-cyan-400 animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+            </div>
+          )}
+          {currentAnimation === 2 && (
+            <div className="font-mono text-green-400 text-xs space-y-0.5">
+              <div className="animate-pulse">0</div>
+              <div className="animate-pulse" style={{ animationDelay: '0.3s' }}>1</div>
+              <div className="animate-pulse" style={{ animationDelay: '0.6s' }}>ア</div>
+            </div>
+          )}
+          {currentAnimation === 3 && (
+            <div className="relative">
+              <div className="w-3 h-3 border border-cyan-400 rotate-45 animate-spin"></div>
+              <div className="w-2 h-2 border border-purple-400 rounded-full absolute top-1 left-1 animate-bounce"></div>
+            </div>
+          )}
+          {currentAnimation === 4 && (
+            <div className="text-gray-400 text-xl">⚪</div>
+          )}
+        </div>
       </button>
     </>
   );
