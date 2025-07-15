@@ -1,33 +1,13 @@
 export default function Experience() {
   const experiences = [
     {
-      company: "TechCorp Solutions",
-      position: "Senior Full Stack Developer",
-      duration: "2020 - Present",
+      company: "Phases India Technologies",
+      position: "Technical Project Manager - Software Development",
+      duration: "2015 - Present",
       achievements: [
-        "Led development of microservices architecture serving 1M+ users",
-        "Reduced application load time by 40% through optimization",
-        "Mentored 5 junior developers and established coding standards",
-      ],
-    },
-    {
-      company: "Digital Innovations Inc",
-      position: "Full Stack Developer",
-      duration: "2017 - 2020",
-      achievements: [
-        "Built and maintained 15+ client applications",
-        "Implemented CI/CD pipelines reducing deployment time by 60%",
-        "Collaborated with design teams to create responsive web applications",
-      ],
-    },
-    {
-      company: "StartupXYZ",
-      position: "Frontend Developer",
-      duration: "2014 - 2017",
-      achievements: [
-        "Developed MVP that secured $2M in Series A funding",
-        "Created component library used across 10+ projects",
-        "Improved user engagement by 35% through UX optimizations",
+        "Develop and maintain multiple web applications and integration",
+        "Project management & Client management",
+        "Mentor an open source team with 18 developers",
       ],
     },
   ];

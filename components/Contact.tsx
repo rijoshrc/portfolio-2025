@@ -1,4 +1,3 @@
-
 export default function Contact() {
   return (
     <section className="min-h-screen py-20 px-6">
@@ -8,33 +7,39 @@ export default function Contact() {
         </h2>
         <div className="grid md:grid-cols-2 gap-12">
           <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 border border-white/20">
-            <h3 className="text-2xl font-semibold text-cyan-300 mb-6">Contact Information</h3>
+            <h3 className="text-2xl font-semibold text-cyan-300 mb-6">
+              Contact Information
+            </h3>
             <div className="space-y-4">
               <div className="flex items-center">
                 <span className="text-2xl mr-4">📧</span>
                 <div>
                   <p className="text-gray-300">Email</p>
-                  <p className="text-cyan-300">alex.johnson@email.com</p>
+                  <p className="text-cyan-300">rijosh.ravi@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <span className="text-2xl mr-4">🔗</span>
                 <div>
                   <p className="text-gray-300">LinkedIn</p>
-                  <p className="text-cyan-300">linkedin.com/in/alexjohnson</p>
+                  <p className="text-cyan-300">
+                    https://www.linkedin.com/in/rijosh-ravi-c-068062131/
+                  </p>
                 </div>
               </div>
               <div className="flex items-center">
                 <span className="text-2xl mr-4">🐙</span>
                 <div>
                   <p className="text-gray-300">GitHub</p>
-                  <p className="text-cyan-300">github.com/alexjohnson</p>
+                  <p className="text-cyan-300">https://github.com/rijoshrc</p>
                 </div>
               </div>
             </div>
           </div>
           <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 border border-white/20">
-            <h3 className="text-2xl font-semibold text-cyan-300 mb-6">Send Message</h3>
+            <h3 className="text-2xl font-semibold text-cyan-300 mb-6">
+              Send Message
+            </h3>
             <form className="space-y-4">
               <div>
                 <input
