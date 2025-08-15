@@ -1,113 +1,209 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from "motion/react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useLenis } from "lenis/react";
+import { useEffect, useState } from "react";
+import { navItems, site } from "@/lib/site";
+import { useIntroDone } from "./Providers";
+import { EASE_OUT_EXPO } from "./ui/motion";
+import { cn } from "@/util/cn";
+
+function useActiveSection(ids: readonly string[]) {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => e.isIntersecting && setActive(e.target.id));
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [ids]);
+  return active;
+}
 
 export default function Navigation() {
-  const [activeSection, setActiveSection] = useState("home");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const ready = useIntroDone();
+  const lenis = useLenis();
+  const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const active = useActiveSection(navItems.map((n) => n.id));
 
-  const navItems = [
-    { id: "home", label: "Home", icon: "🏠" },
-    { id: "about", label: "About", icon: "👨‍💻" },
-    { id: "skills", label: "Skills", icon: "⚡" },
-    { id: "projects", label: "Projects", icon: "🚀" },
-    { id: "experience", label: "Experience", icon: "💼" },
-    { id: "education", label: "Education", icon: "🎓" },
-    { id: "contact", label: "Contact", icon: "📱" },
-  ];
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
+
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    setScrolled(y > 40);
+    setHidden(y > prev && y > 400 && !open);
+  });
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = navItems.map((item) => item.id);
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetBottom = offsetTop + element.offsetHeight;
-
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
+    if (!open) return;
+    lenis?.stop();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      lenis?.start();
+      window.removeEventListener("keydown", onKey);
     };
+  }, [open, lenis]);
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-    setIsMenuOpen(false);
+  const go = (id: string) => {
+    setOpen(false);
+    const target = document.getElementById(id);
+    if (!target) return;
+    if (lenis) lenis.scrollTo(target, { offset: -80, duration: 1.4 });
+    else target.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
-      {/* Desktop Navigation - Terminal Style */}
-      <nav className="fixed top-8 left-0 right-0 z-50 hidden md:block px-6">
-        <div className="backdrop-blur-md bg-black/20 border border-green-500/30 rounded-lg p-2 max-w-4xl mx-auto">
-          <div className="flex items-center space-x-1 overflow-x-auto">
-            <div className="flex space-x-1 mr-4 flex-shrink-0">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            </div>
-            <div className="text-green-400 text-sm font-mono mr-2 flex-shrink-0">
-              rijosh:~$
-            </div>
-            <div className="flex space-x-2 overflow-x-auto">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`px-3 py-1 rounded text-sm font-mono transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
-                    activeSection === item.id
-                      ? "bg-green-500/20 text-green-400 border border-green-500/40"
-                      : "text-green-300 hover:text-green-400 hover:bg-green-500/10"
-                  }`}
-                >
-                  {item.label.toLowerCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </nav>
+      <motion.header
+        className="fixed inset-x-0 top-0 z-50"
+        initial={{ y: -100, opacity: 0 }}
+        animate={ready ? { y: hidden ? -100 : 0, opacity: 1 } : undefined}
+        transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
+      >
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-b from-bg via-bg/80 to-transparent transition-opacity duration-500",
+            scrolled ? "opacity-100" : "opacity-0",
+          )}
+        />
+        <div className="container-x flex h-20 items-center justify-between">
+          <a
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              lenis ? lenis.scrollTo(0, { duration: 1.4 }) : window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="group flex items-center gap-2 font-mono text-sm"
+            aria-label={`${site.name} — back to top`}
+          >
+            <span className="text-accent">{site.shortName.toLowerCase()}</span>
+            <span className="text-subtle">:~$</span>
+            <span className="inline-block h-4 w-2 animate-pulse bg-accent/80" />
+          </a>
 
-      {/* Mobile Navigation - Glassmorphic */}
-      <nav className="fixed top-4 right-4 z-50 md:hidden">
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="backdrop-blur-md bg-white/10 border border-white/20 rounded-full p-3 text-white"
-        >
-          {isMenuOpen ? "✕" : "☰"}
-        </button>
-
-        {isMenuOpen && (
-          <div className="absolute top-16 right-0 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 min-w-[200px]">
+          <nav
+            aria-label="Primary"
+            className={cn(
+              "hidden items-center gap-1 rounded-full border p-1 backdrop-blur-xl transition-all duration-500 md:flex",
+              scrolled ? "border-line bg-surface/70" : "border-transparent bg-transparent",
+            )}
+          >
             {navItems.map((item) => (
-              <button
+              <a
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                  activeSection === item.id
-                    ? "bg-cyan-500/20 text-cyan-400"
-                    : "text-gray-300 hover:text-white hover:bg-white/10"
-                }`}
+                href={`#${item.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  go(item.id);
+                }}
+                className={cn(
+                  "relative rounded-full px-4 py-2 text-sm transition-colors duration-300",
+                  active === item.id ? "text-bg" : "text-muted hover:text-fg",
+                )}
+                aria-current={active === item.id ? "true" : undefined}
               >
-                <span className="text-xl">{item.icon}</span>
-                <span>{item.label}</span>
-              </button>
+                {active === item.id && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 -z-10 rounded-full bg-fg"
+                    transition={{ type: "spring", stiffness: 400, damping: 34 }}
+                  />
+                )}
+                {item.label}
+              </a>
             ))}
-          </div>
+          </nav>
+
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              go("contact");
+            }}
+            className="group hidden items-center gap-2 text-sm md:flex"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+            </span>
+            <span className="text-muted transition-colors group-hover:text-fg">Available for work</span>
+          </a>
+
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="relative z-[70] flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface/70 backdrop-blur-xl md:hidden"
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+
+        <motion.div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-px origin-left bg-accent/70"
+          style={{ scaleX: progress }}
+        />
+      </motion.header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="mobile-menu"
+            className="fixed inset-0 z-[45] flex flex-col justify-between bg-bg/95 px-5 pb-10 pt-28 backdrop-blur-2xl md:hidden"
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          >
+            <nav aria-label="Mobile" className="flex flex-col">
+              {navItems.map((item, i) => (
+                <div key={item.id} className="overflow-hidden border-b border-line">
+                  <motion.a
+                    href={`#${item.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      go(item.id);
+                    }}
+                    className="flex items-baseline justify-between py-4"
+                    initial={{ y: "100%" }}
+                    animate={{ y: "0%" }}
+                    transition={{ duration: 0.8, delay: 0.15 + i * 0.06, ease: EASE_OUT_EXPO }}
+                  >
+                    <span className="font-display text-5xl">{item.label}</span>
+                    <span className="font-mono text-xs text-subtle">0{i + 1}</span>
+                  </motion.a>
+                </div>
+              ))}
+            </nav>
+            <div className="flex flex-col gap-3 text-sm text-muted">
+              <a href={`mailto:${site.email}`} className="text-fg">{site.email}</a>
+              <div className="flex gap-6">
+                <a href={site.socials.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">
+                  LinkedIn <ArrowUpRight size={14} />
+                </a>
+                <a href={site.socials.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">
+                  GitHub <ArrowUpRight size={14} />
+                </a>
+              </div>
+            </div>
+          </motion.div>
         )}
-      </nav>
+      </AnimatePresence>
     </>
   );
 }

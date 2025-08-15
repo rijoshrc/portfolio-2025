@@ -1,46 +1,30 @@
-import Navigation from '@/components/Navigation';
-import Hero from '@/components/Hero';
-import About from '@/components/About';
-import Skills from '@/components/Skills';
-import Projects from '@/components/Projects';
-import Experience from '@/components/Experience';
-import Education from '@/components/Education';
-import Contact from '@/components/Contact';
-import AnimatedBackground from '@/components/AnimatedBackground';
+import Providers from "@/components/Providers";
+import Preloader from "@/components/Preloader";
+import AmbientBackground from "@/components/AmbientBackground";
+import Navigation from "@/components/Navigation";
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Projects from "@/components/Projects";
+import Skills from "@/components/Skills";
+import Experience from "@/components/Experience";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 text-white relative">
-      <AnimatedBackground />
+    <Providers>
+      <Preloader />
+      <AmbientBackground />
       <Navigation />
-
-      <div id="home" className="relative z-10">
+      <main className="relative z-10">
         <Hero />
-      </div>
-
-      <div id="about" className="relative z-10">
         <About />
-      </div>
-
-      <div id="skills" className="relative z-10">
-        <Skills />
-      </div>
-
-      <div id="projects" className="relative z-10">
         <Projects />
-      </div>
-
-      <div id="experience" className="relative z-10">
+        <Skills />
         <Experience />
-      </div>
-
-      <div id="education" className="relative z-10">
-        <Education />
-      </div>
-
-      <div id="contact" className="relative z-10">
         <Contact />
-      </div>
-    </div>
+      </main>
+      <Footer />
+    </Providers>
   );
 }

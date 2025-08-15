@@ -1,66 +1,85 @@
-export default function Skills() {
-  const skillCategories = [
-    {
-      title: "Frontend",
-      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vue.js"],
-      icon: "🎨",
-    },
-    {
-      title: "Backend",
-      skills: [
-        "Node.js",
-        "Express",
-        "PHP",
-        "Laravel",
-        "Frappe",
-        "GraphQL",
-        "REST APIs",
-        "MongoDB",
-        "MySQL",
-      ],
-      icon: "⚙️",
-    },
-    {
-      title: "AI",
-      skills: ["RAG", "FAISS", "Azure AI", "Prompt Engineering"],
-      icon: "🤖",
-    },
-    {
-      title: "Tools & DevOps",
-      skills: ["Docker", "Git", "CI/CD", "Jest", "Webpack"],
-      icon: "🛠️",
-    },
-  ];
+import { Bot, Layout, Server, Wrench } from "lucide-react";
+import SectionHeader from "./ui/SectionHeader";
+import { Reveal, SpotlightCard } from "./ui/motion";
+import { cn } from "@/util/cn";
 
+const categories = [
+  {
+    title: "Frontend",
+    icon: Layout,
+    skills: ["React", "Next.js", "TypeScript", "Vue.js", "Tailwind CSS", "React Native"],
+    span: "md:col-span-7",
+  },
+  {
+    title: "AI",
+    icon: Bot,
+    skills: ["RAG", "FAISS", "Vector databases", "Azure AI", "Prompt engineering"],
+    span: "md:col-span-5",
+    highlight: true,
+  },
+  {
+    title: "Backend & data",
+    icon: Server,
+    skills: ["Node.js", "Express", "PHP", "Laravel", "Symfony", "Frappe", "GraphQL", "REST", "Socket.io", "MySQL", "PostgreSQL", "MongoDB"],
+    span: "md:col-span-8",
+  },
+  {
+    title: "Tools & DevOps",
+    icon: Wrench,
+    skills: ["Docker", "Git", "CI/CD", "Jest", "Webpack"],
+    span: "md:col-span-4",
+  },
+];
+
+const marquee = categories.flatMap((c) => c.skills);
+
+export default function Skills() {
   return (
-    <section className="min-h-screen py-20 px-6">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-          Technical Skills
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {skillCategories.map((category, index) => (
-            <div
-              key={index}
-              className="backdrop-blur-md bg-white/10 rounded-3xl p-8 border border-white/20 hover:border-cyan-400/50 transition-all duration-300"
-            >
-              <div className="text-4xl mb-4 text-center">{category.icon}</div>
-              <h3 className="text-2xl font-semibold text-cyan-300 mb-6 text-center">
-                {category.title}
-              </h3>
-              <div className="space-y-3">
-                {category.skills.map((skill, skillIndex) => (
-                  <div
-                    key={skillIndex}
-                    className="flex items-center justify-center"
-                  >
-                    <span className="text-gray-300 bg-white/5 px-4 py-2 rounded-full text-sm">
-                      {skill}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+    <section id="skills" className="relative z-10 py-28 md:py-40">
+      <div className="container-x">
+        <SectionHeader
+          index="03"
+          label="Stack"
+          title="The right tool, not the newest one."
+          aside="A broad toolkit sharpened across ten years of client work — chosen per problem, not per trend."
+        />
+
+        <div className="mt-16 grid gap-4 md:mt-24 md:grid-cols-12">
+          {categories.map(({ title, icon: Icon, skills, span, highlight }, i) => (
+            <Reveal key={title} delay={i * 0.06} className={span}>
+              <SpotlightCard
+                className={cn(
+                  "flex h-full flex-col rounded-2xl border border-line bg-surface p-7 md:p-9",
+                  highlight && "bg-gradient-to-br from-accent/[0.07] to-surface",
+                )}
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium">{title}</h3>
+                  <Icon size={20} strokeWidth={1.5} className={highlight ? "text-accent" : "text-muted"} />
+                </div>
+                <ul className="mt-10 flex flex-wrap gap-2">
+                  {skills.map((s) => (
+                    <li
+                      key={s}
+                      className="rounded-full border border-line bg-bg/50 px-3.5 py-1.5 text-sm text-muted transition-colors hover:border-fg/30 hover:text-fg"
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </SpotlightCard>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+
+      <div className="mask-fade-x group mt-20 overflow-hidden border-y border-line py-8 md:mt-28" aria-hidden>
+        <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+          {[...marquee, ...marquee].map((s, i) => (
+            <span key={i} className="flex items-center font-display text-4xl italic text-fg/80 md:text-6xl">
+              <span className="px-6 md:px-10">{s}</span>
+              <span className="text-accent text-2xl not-italic">✦</span>
+            </span>
           ))}
         </div>
       </div>
