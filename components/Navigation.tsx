@@ -59,7 +59,7 @@ export default function Navigation() {
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
             </div>
             <div className="text-green-400 text-sm font-mono mr-2 flex-shrink-0">
-              alex@portfolio:~$
+              rijosh:~$
             </div>
             <div className="flex space-x-2 overflow-x-auto">
               {navItems.map((item) => (
