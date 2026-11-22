@@ -9,8 +9,7 @@ export const site = {
   company: "Phases India Technologies",
   location: "India",
   timezone: "Asia/Kolkata",
-  // TODO: replace with the production domain once deployed.
-  url: "https://rijosh.dev",
+  url: "https://rijosh.vercel.app",
   description:
     "Full stack developer and technical project manager with 10+ years building scalable web platforms, SaaS products and AI-driven automation with React, Next.js, Node.js, Laravel and Vue.",
   socials: {
