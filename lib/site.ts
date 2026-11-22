@@ -6,6 +6,8 @@ export const site = {
   shortName: "Rijosh",
   role: "Full Stack Developer",
   title: "Technical Project Manager",
+  // Short line under the name in the navigation logo.
+  tagline: "Full stack · Project lead",
   company: "Phases India Technologies",
   location: "India",
   timezone: "Asia/Kolkata",

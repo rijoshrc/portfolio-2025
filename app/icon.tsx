@@ -1,10 +1,11 @@
 import { ImageResponse } from "next/og";
+import { SERIF, serifFonts } from "@/lib/ogFonts";
 import { theme } from "@/lib/themes";
 
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
-export default function Icon() {
+export default async function Icon() {
   return new ImageResponse(
     (
       <div
@@ -18,13 +19,13 @@ export default function Icon() {
           borderRadius: 14,
           color: theme.accent,
           fontSize: 42,
-          fontFamily: "Georgia, serif",
+          fontFamily: SERIF,
           fontStyle: "italic",
         }}
       >
         R
       </div>
     ),
-    size,
+    { ...size, fonts: await serifFonts() },
   );
 }

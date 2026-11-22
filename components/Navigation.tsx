@@ -87,12 +87,19 @@ export default function Navigation() {
               if (lenis) lenis.scrollTo(0, { duration: 1.4 });
               else window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="group flex items-center gap-2 font-mono text-sm"
+            className="group flex items-center gap-3"
             aria-label={`${site.name} — back to top`}
           >
-            <span className="text-accent">{site.shortName.toLowerCase()}</span>
-            <span className="text-subtle">:~$</span>
-            <span className="inline-block h-4 w-2 animate-pulse bg-accent/80" />
+            <span
+              aria-hidden
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-accent/45 pr-0.5 font-display text-2xl italic leading-none text-accent transition-colors duration-500 ease-out-expo group-hover:border-accent group-hover:bg-accent group-hover:text-bg"
+            >
+              {site.shortName.charAt(0)}
+            </span>
+            <span className="flex flex-col leading-tight">
+              <span className="text-sm font-medium text-fg">{site.name}</span>
+              <span className="hidden text-xs tracking-wide text-subtle sm:block">{site.tagline}</span>
+            </span>
           </a>
 
           <nav
