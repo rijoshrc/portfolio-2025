@@ -1,89 +1,182 @@
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* ------------------------------------------------------------------
+   Design tokens — one neutral ramp + one accent, used sparingly.
+   Channels stay space-separated so `rgb(var(--x) / a)` works in plain CSS.
+   ------------------------------------------------------------------ */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --bg: 10 10 11;        /* #0A0A0B */
+  --surface: 17 17 19;   /* #111113 */
+  --elevated: 24 24 27;  /* #18181B */
+  --fg: 237 237 239;     /* #EDEDEF */
+  --muted: 161 161 170;  /* #A1A1AA  (AA contrast on bg) */
+  --subtle: 113 113 122; /* #71717A  decorative only */
+  --accent: 198 243 107; /* #C6F36B */
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/* Values that reference runtime variables (tokens above, next/font) use `inline`. */
+@theme inline {
+  --color-bg: rgb(var(--bg));
+  --color-surface: rgb(var(--surface));
+  --color-elevated: rgb(var(--elevated));
+  --color-fg: rgb(var(--fg));
+  --color-muted: rgb(var(--muted));
+  --color-subtle: rgb(var(--subtle));
+  --color-accent: rgb(var(--accent));
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-instrument), Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+@theme {
+  --color-line: rgb(255 255 255 / 0.08);
+
+  /* Fluid display scale (clamp min, preferred, max) */
+  --text-display-xl: clamp(4.5rem, 11vw, 11rem);
+  --text-display-xl--line-height: 0.9;
+  --text-display-xl--letter-spacing: -0.035em;
+  --text-display-lg: clamp(2.75rem, 7vw, 6.5rem);
+  --text-display-lg--line-height: 0.95;
+  --text-display-lg--letter-spacing: -0.03em;
+  --text-display-md: clamp(2rem, 4.5vw, 3.75rem);
+  --text-display-md--line-height: 1;
+  --text-display-md--letter-spacing: -0.02em;
+
+  --container-container: 1320px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-drift: drift 22s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(4%, -6%, 0) scale(1.08); }
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+@layer base {
+  /* Tailwind 4 defaults borders to currentColor; keep the v3-era hairline default. */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-line);
+  }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* v4 buttons default to cursor: default; keep pointer like v3. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html {
+    background: rgb(var(--bg));
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgb(var(--accent));
+    color: rgb(var(--bg));
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Thin, quiet scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.15) transparent;
   }
 }
 
-/* Custom animations */
-@keyframes appear {
-  from {
+@utility container-x {
+  @apply mx-auto w-full max-w-container px-5 sm:px-8 lg:px-12;
+}
+
+@utility eyebrow {
+  @apply font-mono text-[11px] uppercase tracking-[0.2em] text-muted;
+}
+
+@layer components {
+
+  /* Hairline card with a cursor-following spotlight (set --x / --y). */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: -1;
     opacity: 0;
-    transform: translateY(20px);
+    transition: opacity 400ms ease;
+    background: radial-gradient(
+      420px circle at var(--x, 50%) var(--y, 50%),
+      rgb(var(--accent) / 0.08),
+      transparent 60%
+    );
   }
-  to {
+  .spotlight:hover::before {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-.animate-appear {
-  animation: appear 0.6s ease-out;
+/* text-balance / text-pretty are built into Tailwind 4. */
+@utility mask-fade-x {
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
 }
 
-/* Glassmorphic effects */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
-.glass-dark {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Film grain overlay */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Terminal cursor animation */
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-.terminal-cursor::after {
-  content: '_';
-  animation: blink 1s infinite;
-}
-
-/* Responsive text sizes */
-@media (max-width: 768px) {
-  .text-7xl {
-    font-size: 3rem;
-  }
-  .text-5xl {
-    font-size: 2.5rem;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
