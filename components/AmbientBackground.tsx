@@ -32,14 +32,14 @@ export default function AmbientBackground() {
       <div ref={ref} aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
         <div className="absolute -left-[20%] -top-[30%] h-[70vmax] w-[70vmax] animate-drift rounded-full bg-accent/[0.06] blur-[120px]" />
         <div
-          className="absolute -bottom-[35%] -right-[25%] h-[60vmax] w-[60vmax] animate-drift rounded-full bg-[#7c8cff]/[0.05] blur-[140px]"
+          className="absolute -bottom-[35%] -right-[25%] h-[60vmax] w-[60vmax] animate-drift rounded-full bg-glow/[0.05] blur-[140px]"
           style={{ animationDelay: "-11s" }}
         />
         <div
           className="absolute inset-0 opacity-[0.35]"
           style={{
             backgroundImage:
-              "linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px)",
+              "linear-gradient(to right, rgb(var(--ink) / 0.035) 1px, transparent 1px)",
             backgroundSize: "calc(100% / 12) 100%",
             maskImage: "linear-gradient(to bottom, #000, transparent 70%)",
           }}

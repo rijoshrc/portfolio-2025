@@ -1,3 +1,4 @@
+import { activeTheme, theme, themeBootScript, themeCss } from "@/lib/themes";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { site } from "@/lib/site";
@@ -59,8 +60,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0A0A0B",
-  colorScheme: "dark",
+  themeColor: theme.bg,
+  colorScheme: theme.scheme,
 };
 
 const jsonLd = {
@@ -76,7 +77,17 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable} ${mono.variable}`}>
+    // data-theme may be swapped by the boot script before hydration, hence suppressHydrationWarning.
+    <html
+      lang="en"
+      data-theme={activeTheme}
+      className={`${sans.variable} ${display.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript() }} />
+      </head>
       <body>
         {children}
         <script

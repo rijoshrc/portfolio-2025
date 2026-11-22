@@ -9,6 +9,7 @@ import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Profile from "@/components/Profile";
 import Footer from "@/components/Footer";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
         <Profile />
       </main>
       <Footer />
+      <ThemeSwitcher />
     </Providers>
   );
 }

@@ -2,18 +2,10 @@
 
 /* ------------------------------------------------------------------
    Design tokens — one neutral ramp + one accent, used sparingly.
-   Channels stay space-separated so `rgb(var(--x) / a)` works in plain CSS.
+   Values (--bg, --surface, --elevated, --fg, --muted, --subtle,
+   --accent, --glow, --ink) are set on <html> from lib/themes.ts.
+   Channels are space-separated so `rgb(var(--x) / a)` works in plain CSS.
    ------------------------------------------------------------------ */
-:root {
-  --bg: 10 10 11;        /* #0A0A0B */
-  --surface: 17 17 19;   /* #111113 */
-  --elevated: 24 24 27;  /* #18181B */
-  --fg: 237 237 239;     /* #EDEDEF */
-  --muted: 161 161 170;  /* #A1A1AA  (AA contrast on bg) */
-  --subtle: 113 113 122; /* #71717A  decorative only */
-  --accent: 198 243 107; /* #C6F36B */
-  color-scheme: dark;
-}
 
 /* Values that reference runtime variables (tokens above, next/font) use `inline`. */
 @theme inline {
@@ -24,6 +16,8 @@
   --color-muted: rgb(var(--muted));
   --color-subtle: rgb(var(--subtle));
   --color-accent: rgb(var(--accent));
+  --color-glow: rgb(var(--glow));
+  --color-line: rgb(var(--ink) / 0.08);
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-display: var(--font-instrument), Georgia, serif;
@@ -31,8 +25,6 @@
 }
 
 @theme {
-  --color-line: rgb(255 255 255 / 0.08);
-
   /* Fluid display scale (clamp min, preferred, max) */
   --text-display-xl: clamp(4.5rem, 11vw, 11rem);
   --text-display-xl--line-height: 0.9;
@@ -106,7 +98,7 @@
   /* Thin, quiet scrollbar */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgb(255 255 255 / 0.15) transparent;
+    scrollbar-color: rgb(var(--ink) / 0.15) transparent;
   }
 }
 
